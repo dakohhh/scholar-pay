@@ -2,16 +2,13 @@ import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
 
-    username: { type: String, required: true },
+    firstname: {type: String, required:true},
+
+    lastname: {type: String, required:true},
 
     email: { type: String, required: true },
 
-    authentication: {
-        password: { type: String, required: true, select: false },
-        salt: { type: String, select: false },
-        sessionToken: { type: String, select: false },
-
-    }
+    password: {type: String, required:true}
 
 })
 
@@ -29,18 +26,13 @@ export const getUsers = () => UserModel.find() // returns all users in the User 
 export const getUsersByEmail = (email: string) => UserModel.findOne({ email });
 
 
-export const getUserBySessionToken = (sessionToken: string) => UserModel.findOne({
-    "authentication.sessionToken": sessionToken
-})
-
-
-export const getUserById = (userId: string) => UserModel.findById(userId)
+export const getUserById = (userId: string) => UserModel.findById(userId);
 
 export const createUser = (values: Record<string, any>) => new UserModel(values)
     .save().then((user) => user.toObject())
 
 
-export const deleteUserById = (userId: string) => UserModel.findOneAndDelete({ _id: userId })
+export const deleteUserById = (userId: string) => UserModel.findOneAndDelete({ _id: userId });
 
 
 export const updateUserById = (userId: string, values: Record<string, any>) => UserModel.findByIdAndUpdate(userId, values);

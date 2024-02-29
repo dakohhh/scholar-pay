@@ -4,17 +4,12 @@ import { createUser, getUsersByEmail } from "../db/users";
 
 import { authentication, random } from "../helpers";
 
-export const signup = async (request: express.Request, response: express.Response) => {
 
+export const signup = async (request: express.Request, response: express.Response) => {
 
     try {
 
-        const { email, password, username } = request.body;
-
-        if (!email || !password || !username) {
-
-            return response.status(400).json({ message: "field is required" })
-        }
+        const { email, password, firstname, lastname } = request.body;
 
         if (await getUsersByEmail(email)) {
 
@@ -22,23 +17,15 @@ export const signup = async (request: express.Request, response: express.Respons
 
         }
 
-
-
-
-
-        const salt = random();
-
         const user = await createUser({
-            email,
-            username,
-            authenrtication: {
-                salt,
-                password: authentication(salt, password),
-            },
+            firstname:firstname,
+            lastname:lastname,
+            email: email,
+            password: password
+            
         })
 
-
-        return response.status(200).json(user).end()
+        return response.status(200).json({message: "user created successfully", data: user}).end()
 
     }
     catch (error) {
@@ -46,3 +33,6 @@ export const signup = async (request: express.Request, response: express.Respons
         return response.sendStatus(400)
     }
 }
+
+
+
