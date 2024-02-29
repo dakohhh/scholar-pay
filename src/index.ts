@@ -6,7 +6,9 @@ import compression from "compression";
 import cors from "cors";
 import mongoose from "mongoose";
 import router from "./router";
+import exceptionHandler from "./middleware/exceptionHandler";
 import dotenv from 'dotenv'
+import { NotFoundException, ServerErrorException, UnauthorizedException } from "./helpers/exceptions";
 
 dotenv.config();
 
@@ -15,6 +17,25 @@ dotenv.config();
 
 
 const app = express();
+
+app.use((err:Error, req:express.Request, res:express.Response, next:express.NextFunction) => {
+    if (err instanceof UnauthorizedException ||
+        err instanceof ServerErrorException ||
+        err instanceof NotFoundException) {
+      res.status(err.statusCode).json({
+        status: err.statusCode,
+        message: err.message,
+        success: false,
+      });
+    } else {
+      // Handle other types of errors
+      res.status(500).json({
+        status: 500,
+        message: 'Internal Server Error',
+        success: false,
+      });
+    }
+});
 
 app.use(cors({
     credentials: true
@@ -26,6 +47,7 @@ app.use(compression());
 app.use(cookieParser());
 
 app.use(bodyParser.json());
+
 
 app.use("/", router());
 

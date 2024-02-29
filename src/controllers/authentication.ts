@@ -2,6 +2,8 @@ import express from "express";
 
 import { createUser, getUsersByEmail } from "../db/users";
 
+import { checkPassword, hashPassword } from "../authentication/hashing";
+
 import { authentication, random } from "../helpers";
 
 
@@ -21,7 +23,7 @@ export const signup = async (request: express.Request, response: express.Respons
             firstname:firstname,
             lastname:lastname,
             email: email,
-            password: password
+            password: hashPassword(password)
             
         })
 
