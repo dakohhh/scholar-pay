@@ -20,7 +20,7 @@ const app = express();
 
 
 app.use(cors({
-    credentials: true
+	credentials: true
 }));
 
 
@@ -36,25 +36,23 @@ app.use("/", router());
 
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
 
-    console.log(err.constructor)
-    if (err instanceof BadRequestException ||
-        err instanceof UnauthorizedException ||
-        err instanceof ServerErrorException ||
-        err instanceof NotFoundException) {
-      res.status(err.statusCode).json({
-        status: err.statusCode,
-        message: err.message,
-        success: false,
-      });
-    } else {
-      // Handle other types of errors
-      res.status(500).json({
-        status: 500,
-        message: 'Internal Server Error',
-        success: false,
-      });
-    }
-  });
+	if (err instanceof BadRequestException || err instanceof UnauthorizedException || err instanceof ServerErrorException || err instanceof NotFoundException) {
+
+		res.status(err.statusCode).json({
+			status: false,
+			message: err.message,
+			data: err.data,
+		});
+	}
+	else {
+		// Handling other types of errors
+		res.status(500).json({
+			status: false,
+			message: 'Internal Server Error',
+			data: null
+		});
+	}
+});
 
 
 const server = http.createServer(app);
@@ -62,14 +60,14 @@ const server = http.createServer(app);
 
 server.listen(8000, () => {
 
-    console.log(`App runnning on http://localhost:8000/`)
+	console.log(`App runnning on http://localhost:8000/`)
 
 });
 
 
 
 
-const MONGO_URL = process.env.DEV  ? process.env.DEV_MONGO_URL : process.env.PROD_MONGO_URL || ""
+const MONGO_URL = process.env.DEV ? process.env.DEV_MONGO_URL : process.env.PROD_MONGO_URL || ""
 
 mongoose.Promise = Promise
 
@@ -77,7 +75,7 @@ mongoose.connect(MONGO_URL);
 
 mongoose.connection.on("error", (error: Error) => {
 
-    console.log(error);
+	console.log(error);
 })
 
 

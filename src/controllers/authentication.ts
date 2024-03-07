@@ -4,7 +4,7 @@ import { createUser, getUsersByEmail } from "../db/users";
 
 import { checkPassword, hashPassword } from "../authentication/hashing";
 
-import { authentication, random } from "../helpers";
+import { BadRequestException } from "../helpers/exceptions";
 
 
 export const signup = async (request: express.Request, response: express.Response, next:express.NextFunction) => {
@@ -15,8 +15,7 @@ export const signup = async (request: express.Request, response: express.Respons
 
         if (await getUsersByEmail(email)) {
 
-            return response.status(400).json({ message: "email already exists" })
-
+            throw new BadRequestException("email already exists");
         }
 
         const user = await createUser({
@@ -27,7 +26,9 @@ export const signup = async (request: express.Request, response: express.Respons
             
         })
 
-        return response.status(200).json({message: "user created successfully", data: user}).end()
+        const context = {user: user}
+
+        return response.status(201).json({status: true, message: "user created successfully", data: context}).end()
 
     }
     catch (error) {
@@ -35,6 +36,36 @@ export const signup = async (request: express.Request, response: express.Respons
         next(error)
     }
 }
+
+
+
+
+
+
+
+
+
+export const login = async (request: express.Request, response: express.Response, next:express.NextFunction) => {
+
+    try {
+
+        const { email, password } = request.body;
+
+        const context = {token: "null"}
+
+        return response.status(200).json({status: true, message: "login successfull", data: context}).end()
+
+    }
+    catch (error) {
+        console.log(error)
+        next(error)
+    }
+}
+
+
+
+
+
 
 
 
