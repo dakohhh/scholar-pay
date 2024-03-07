@@ -7,7 +7,7 @@ import { checkPassword, hashPassword } from "../authentication/hashing";
 import { authentication, random } from "../helpers";
 
 
-export const signup = async (request: express.Request, response: express.Response) => {
+export const signup = async (request: express.Request, response: express.Response, next:express.NextFunction) => {
 
     try {
 
@@ -32,7 +32,7 @@ export const signup = async (request: express.Request, response: express.Respons
     }
     catch (error) {
         console.log(error)
-        return response.sendStatus(400)
+        next(error)
     }
 }
 
