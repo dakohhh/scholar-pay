@@ -4,7 +4,7 @@ import { checkPassword } from "./hashing";
 import { createJWT, createTokenData } from "./jwt";
 
 
-export const authenticateUser =  async (email:string, password:string) =>{
+export const authenticateUser =  async (email:string, password:string): Promise<string> =>{
 
     const user =  await getUserByEmail(email);
 
@@ -14,11 +14,7 @@ export const authenticateUser =  async (email:string, password:string) =>{
     }
 
     const token = createJWT(createTokenData(user.id));
-
-
-    console.log(token)
-
-
-    return user.toObject();
+    
+    return token;
 
 }

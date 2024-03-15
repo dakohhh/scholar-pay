@@ -45,22 +45,19 @@ export const signup = async (request: express.Request, response: express.Respons
 
 
 
-
 export const login = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
-
     try {
-
         const { email, password } = request.body;
 
+        const token = await authenticateUser(email, password)
 
-        const user = await authenticateUser(email, password)
+        const context = { token: token }
 
-        console.log(user)
-
-
-        const context = { token: "null" }
-
-        return response.status(200).json({ status: true, message: "login successfull", data: context }).end()
+        return response.status(200).json({
+            status: true, 
+            message: "login successfull", 
+            data: context 
+        }).end()
 
     }
     catch (error) {
