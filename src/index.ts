@@ -8,7 +8,8 @@ import mongoose from "mongoose";
 import router from "./router";
 import exceptionHandler from "./middleware/exceptionHandler";
 import dotenv from 'dotenv'
-import { NotFoundException, ServerErrorException, UnauthorizedException, BadRequestException } from "./helpers/exceptions";
+import config from './config';
+import { NotFoundException, ServerErrorException, UnauthorizedException, BadRequestException, CredentialException } from "./helpers/exceptions";
 
 dotenv.config();
 
@@ -36,7 +37,11 @@ app.use("/", router());
 
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
 
-	if (err instanceof BadRequestException || err instanceof UnauthorizedException || err instanceof ServerErrorException || err instanceof NotFoundException) {
+	if (err instanceof BadRequestException || 
+		err instanceof UnauthorizedException || 
+		err instanceof ServerErrorException || 
+		err instanceof NotFoundException || 
+		err instanceof CredentialException) {
 
 		res.status(err.statusCode).json({
 			status: false,
@@ -67,7 +72,7 @@ server.listen(8000, () => {
 
 
 
-const MONGO_URL = process.env.DEV ? process.env.DEV_MONGO_URL : process.env.PROD_MONGO_URL || ""
+const MONGO_URL = config.database
 
 mongoose.Promise = Promise
 

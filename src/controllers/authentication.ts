@@ -1,34 +1,39 @@
 import express from "express";
 
-import { createUser, getUsersByEmail } from "../db/users";
+import { createUser, getUserByEmail } from "../db/users";
 
 import { checkPassword, hashPassword } from "../authentication/hashing";
 
 import { BadRequestException } from "../helpers/exceptions";
 
+import { User } from "../types/user";
 
-export const signup = async (request: express.Request, response: express.Response, next:express.NextFunction) => {
+import config from "../config";
+
+import { authenticateUser } from "../authentication/auth"
+
+export const signup = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
 
     try {
 
         const { email, password, firstname, lastname } = request.body;
 
-        if (await getUsersByEmail(email)) {
+        if (await getUserByEmail(email)) {
 
             throw new BadRequestException("email already exists");
         }
 
-        const user = await createUser({
-            firstname:firstname,
-            lastname:lastname,
+        const user: User = await createUser({
+            firstname: firstname,
+            lastname: lastname,
             email: email,
             password: hashPassword(password)
-            
+
         })
 
-        const context = {user: user}
+        const context = { user: user }
 
-        return response.status(201).json({status: true, message: "user created successfully", data: context}).end()
+        return response.status(201).json({ status: true, message: "user created successfully", data: context }).end()
 
     }
     catch (error) {
@@ -41,19 +46,21 @@ export const signup = async (request: express.Request, response: express.Respons
 
 
 
-
-
-
-
-export const login = async (request: express.Request, response: express.Response, next:express.NextFunction) => {
+export const login = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
 
     try {
 
         const { email, password } = request.body;
 
-        const context = {token: "null"}
 
-        return response.status(200).json({status: true, message: "login successfull", data: context}).end()
+        const user = await authenticateUser(email, password)
+
+        console.log(user)
+
+
+        const context = { token: "null" }
+
+        return response.status(200).json({ status: true, message: "login successfull", data: context }).end()
 
     }
     catch (error) {

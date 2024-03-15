@@ -46,3 +46,16 @@ export class BadRequestException extends Error {
         this.data = data
     }
 }
+
+
+
+
+export class CredentialException extends Error {
+    statusCode: number = StatusCodes.UNAUTHORIZED
+    data: any[] | null;
+    constructor(message: string, data: any[] | null = null) {
+        super(message)
+        this.name = this.constructor.name
+        this.data = data
+    }
+}

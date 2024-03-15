@@ -1,7 +1,8 @@
 
-
 export interface TokenData {
     userId: string;
-    iat: string;
-    exp: string;
+    iat: number;
+    exp: number;
 }
+
+
