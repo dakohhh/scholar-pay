@@ -59,3 +59,16 @@ export class CredentialException extends Error {
         this.data = data
     }
 }
+
+
+
+export class ForbiddenException extends Error {
+    statusCode: number = StatusCodes.FORBIDDEN;
+    data: any[] | null;
+
+    constructor(message: string, data: any[] | null = null) {
+        super(message);
+        this.name = this.constructor.name;
+        this.data = data;
+    }
+}

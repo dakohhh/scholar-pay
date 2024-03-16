@@ -9,7 +9,7 @@ import router from "./router";
 import exceptionHandler from "./middleware/exceptionHandler";
 import dotenv from 'dotenv'
 import config from './config';
-import { NotFoundException, ServerErrorException, UnauthorizedException, BadRequestException, CredentialException } from "./helpers/exceptions";
+import { NotFoundException, ServerErrorException, UnauthorizedException, BadRequestException, CredentialException, ForbiddenException } from "./helpers/exceptions";
 
 dotenv.config();
 
@@ -41,6 +41,7 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 		err instanceof UnauthorizedException || 
 		err instanceof ServerErrorException || 
 		err instanceof NotFoundException || 
+		err instanceof ForbiddenException || 
 		err instanceof CredentialException) {
 
 		res.status(err.statusCode).json({
