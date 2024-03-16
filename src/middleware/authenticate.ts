@@ -22,6 +22,10 @@ export default async (req: AuthenticatedRequest, res: express.Response, next: ex
 
         const user = await verifyJWT(token);
 
+        if (!user){
+            throw new CredentialException("Unauthorized: Invalid Token");
+        }
+
         req.user = user
 
         next();

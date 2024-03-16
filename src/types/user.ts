@@ -9,8 +9,11 @@ export interface User{
 
 
 export interface IUser extends Document {
+    _id: mongoose.Types.ObjectId;
     firstname: string;
     lastname: string;
     email: string;
     password: string;
+    fullname?:string
+    returnUser?: User
 }
