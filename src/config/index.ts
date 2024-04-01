@@ -24,3 +24,4 @@ const config = {
 const environment: string  = process.env.DEV? "development" : "production";
 
 export default config[environment as keyof typeof config]
+
