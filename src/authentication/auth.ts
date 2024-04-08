@@ -1,5 +1,5 @@
 import { BadRequestException, CredentialException } from "../helpers/exceptions";
-import { getUserByEmail } from "../db/users";
+import { getUserByEmail } from "../repository/users";
 import { checkPassword } from "./hashing";
 import { createJWT, createTokenData } from "./jwt";
 

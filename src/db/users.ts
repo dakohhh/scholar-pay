@@ -1,7 +1,12 @@
 import mongoose, { Schema } from "mongoose";
 import { User, IUser } from "../types/user";
+import UserRoles from "../enum/userRoles";
+import { InstituitionModel } from "./institution";
 
-const UserSchema: Schema<IUser> = new mongoose.Schema<IUser>({
+
+
+
+export const BaseUserSchema: Schema = new mongoose.Schema({
 
     firstname: { type: String, required: true },
 
@@ -11,8 +16,24 @@ const UserSchema: Schema<IUser> = new mongoose.Schema<IUser>({
 
     password: { type: String, required: true },
 
+    institution: {type: Schema.Types.ObjectId, required: true, ref: InstituitionModel},
+
+    role: { type: Number, required: true, enum: Object.values(UserRoles) } 
+
 },
     { timestamps: true })
+
+
+
+
+
+
+
+
+export const UserSchema: Schema<IUser> = new mongoose.Schema<IUser>({
+
+    ...BaseUserSchema.obj
+})
 
 
 UserSchema.virtual('returnUser').get(function () {
@@ -27,32 +48,4 @@ UserSchema.virtual('returnUser').get(function () {
 
 
 export const UserModel = mongoose.model<IUser>('User', UserSchema);
-
-
-
-
-
-
-
-// Repository
-
-export const getUsers = () => UserModel.find() // returns all users in the User schema
-
-export const getUserByEmail = (email: string) => UserModel.findOne({ email });
-
-
-export const getUserById = (userId: string) => UserModel.findById(userId);
-
-
-export const createUser = (values: Record<string, any>) => new UserModel(values)
-    .save().then((user) => {
-        const { password, ...userObject } = user.toObject()
-        return userObject;
-    })
-
-
-export const deleteUserById = (userId: string) => UserModel.findOneAndDelete({ _id: userId });
-
-
-export const updateUserById = (userId: string, values: Record<string, any>) => UserModel.findByIdAndUpdate(userId, values);
 

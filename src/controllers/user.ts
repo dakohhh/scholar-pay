@@ -1,5 +1,5 @@
 import express from "express";
-import {AuthenticatedRequest} from "../middleware/authenticate"
+import { AuthenticatedRequest } from "../middleware/authenticate"
 
 
 
@@ -11,7 +11,7 @@ export const getAuthenticatedUser = async (request: AuthenticatedRequest, respon
 
         const context = {user: user.returnUser}
 
-        return response.status(201).json({ status: true, message: "get user successfully", data: context }).end()
+        return response.status(201).json({ status: true, message: "get user successfully", data: context })
 
     }
     catch (error) {

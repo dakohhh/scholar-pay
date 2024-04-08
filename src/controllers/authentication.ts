@@ -1,14 +1,12 @@
 import express from "express";
 
-import { createUser, getUserByEmail } from "../db/users";
+import { createUser, getUserByEmail } from "../repository/users";
 
-import { checkPassword, hashPassword } from "../authentication/hashing";
+import { hashPassword } from "../authentication/hashing";
 
 import { BadRequestException } from "../helpers/exceptions";
 
 import { User } from "../types/user";
-
-import config from "../config";
 
 import { authenticateUser } from "../authentication/auth"
 
@@ -33,7 +31,11 @@ export const signup = async (request: express.Request, response: express.Respons
 
         const context = { user: user }
 
-        return response.status(201).json({ status: true, message: "user created successfully", data: context }).end()
+        return response.status(201).json({ 
+            status: true, 
+            message: "user created successfully", 
+            data: context 
+        })
 
     }
     catch (error) {

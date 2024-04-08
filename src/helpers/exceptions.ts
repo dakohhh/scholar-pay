@@ -2,22 +2,22 @@ import { StatusCodes } from "http-status-codes";
 
 
 
-export class UnauthorizedException extends Error {
+export class UnauthorizedException<T> extends Error {
     statusCode: number = StatusCodes.UNAUTHORIZED
-    data: any[] | null;
-    constructor(message: string, data: any[] | null = null) {
+    data: T | null;
+    constructor(message: string, data: T | null = null) {
         super(message);
         this.name = this.constructor.name;
         this.data = data
     }
 }
 
-export class ServerErrorException extends Error {
+export class ServerErrorException<T> extends Error {
 
     statusCode: number = StatusCodes.INTERNAL_SERVER_ERROR
-    data: any[] | null;
+    data: T | null;
 
-    constructor(message: string, data: any[] | null = null) {
+    constructor(message: string, data: T | null = null) {
         super(message);
         this.name = this.constructor.name;
         this.data = data
@@ -25,11 +25,11 @@ export class ServerErrorException extends Error {
 }
 
 
-export class NotFoundException extends Error {
+export class NotFoundException<T> extends Error {
     statusCode: number = StatusCodes.NOT_FOUND
-    data: any[] | null;
+    data: T | null;
 
-    constructor(message: string, data: any[] | null = null) {
+    constructor(message: string, data: T | null = null) {
         super(message);
         this.name = this.constructor.name;
         this.data = data
@@ -37,10 +37,10 @@ export class NotFoundException extends Error {
 }
 
 
-export class BadRequestException extends Error {
+export class BadRequestException<T> extends Error {
     statusCode: number = StatusCodes.BAD_REQUEST
-    data: any[] | null;
-    constructor(message: string, data: any[] | null = null) {
+    data: T | null;
+    constructor(message: string, data: T | null = null) {
         super(message)
         this.name = this.constructor.name
         this.data = data
@@ -50,10 +50,10 @@ export class BadRequestException extends Error {
 
 
 
-export class CredentialException extends Error {
+export class CredentialException<T> extends Error {
     statusCode: number = StatusCodes.UNAUTHORIZED
-    data: any[] | null;
-    constructor(message: string, data: any[] | null = null) {
+    data: T | null;
+    constructor(message: string, data: T | null = null) {
         super(message)
         this.name = this.constructor.name
         this.data = data
@@ -62,11 +62,11 @@ export class CredentialException extends Error {
 
 
 
-export class ForbiddenException extends Error {
+export class ForbiddenException<T> extends Error {
     statusCode: number = StatusCodes.FORBIDDEN;
-    data: any[] | null;
+    data: T | null;
 
-    constructor(message: string, data: any[] | null = null) {
+    constructor(message: string, data: T | null = null) {
         super(message);
         this.name = this.constructor.name;
         this.data = data;
