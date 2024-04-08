@@ -3,8 +3,7 @@ import { Payload } from "../types/jwt"
 import config from "../config";
 import { ForbiddenException } from "../helpers/exceptions";
 
-import { getUserById, UserModel} from "../db/users";
-
+import { getUserById } from "../repository/users";
 
 
 
